@@ -1,0 +1,96 @@
+[PASS] table1_shape  ->  9 data rows, expected 9
+[PASS] table1_every_cell_matches_the_closed_form  ->  all 36 cells and all 9 p1 labels reproduce
+[PASS] table1_scenarios_lie_inside_the_certified_grid  ->  spec p0 [0.45, 0.5, 0.55, 0.6, 0.65], or [0.5, 0.6, 0.7, 0.8, 1.0], se [0.7, 0.8, 0.9, 0.98]
+[PASS] emethods_monte_carlo_table_matches_the_legacy_run  ->  all 5 rows x 5 values reproduce from reports/simulation_tipping_point.json
+[PASS] emethods_boundary_table_recomputes_from_the_model  ->  both arms reproduce from effective() and observed_risk_grade()
+[PASS] emethods_or1_contour_table_matches_the_legacy_run  ->  all 9 contour rows reproduce
+[PASS] emethods_two_way_grid_size_is_correct  ->  printed 16 x 9 = 144, actual 16 x 9 = 144
+[PASS] emethods_one_way_slice_endpoints_match  ->  0.5606 at a1 = 0.05 and 1.0813 at a1 = 0.80
+[PASS] emethods_shape_artefact_summary_matches  ->  abs range 0.00 to 4.50 pp
+[PASS] emethods_shape_artefact_maximum_is_four_five  ->  max 4.50 pp
+[PASS] emethods_shape_artefact_pct_of_threshold  ->  max fraction 23.2 per cent of Delta_tip
+[PASS] emethods_shape_extremes_are_the_opposite_corners  ->  extremes at [(0.3, 0.6), (0.6, 0.3)]
+[PASS] emethods_shape_artefact_vanishes_at_equal_concentration  ->  4 equal-concentration combinations, all zero
+[PASS] headline_threshold_is_19_8  ->  delta_tip(0.60, 0.55, 0.90, 0) = 19.8000 pp, printed 7 times
+[PASS] se_scan_range_is_15_4_to_21_6  ->  se=0.7: 15.4000 -> printed 15.4, se=0.98: 21.5600 -> printed 21.6
+[PASS] two_way_family_range_is_17_70_to_26_02  ->  17.6967 to 26.0156 pp, printed 17.70 to 26.02
+[PASS] manuscript_two_way_range_is_a_correct_rounding  ->  26.02 printed to one decimal as 26.0; 17.70 to 17.7
+[PASS] index_upgrade_rate_for_a_null_is_71_percent  ->  a1 = 0.7120
+[PASS] reference_upgrade_rate_is_15_percent  ->  a0 = 0.15
+[PASS] closed_form_to_boundary_ratio_is_0_997  ->  19.8294 vs 19.7764, ratio 0.997330
+[PASS] index_effective_false_positive_at_crossing_is_0_2678  ->  0.267764
+[PASS] observed_substitution_is_16_6_pp_and_16_percent  ->  observed risks 0.4950/0.3808 give 16.60 pp, 16.15 per cent low
+[PASS] observed_risks_are_0_495_and_0_381  ->  0.495000, 0.380769
+[PASS] same_denominator_conversion_of_10_6_percent  ->  8.48 to 10.07 pp
+[PASS] same_denominator_conversion_of_25_8_percent  ->  20.64 to 24.51 pp
+[PASS] f_zero_is_the_largest_in_the_family  ->  f=0.0: 19.80, f=0.05: 18.70, f=0.1: 17.60, f=0.15: 16.50
+[PASS] non_differential_error_attenuates_but_never_reverses  ->  OR_obs 0.6469, OR_obs 0.7383, OR_obs 0.8276
+[PASS] baseline_artefact_agrees_with_this_run  ->  baseline published_figures matches the live recomputation
+[PASS] baseline_artefact_declares_what_it_did_not_recompute  ->  5 external inputs listed as not recomputed
+[PASS] manuscript_makes_no_claim_stronger_than_it_can_support  ->  4 forbidden patterns absent; 'significan*' occurs only in the permitted caveat
+[PASS] every_minimality_word_is_negated_in_its_own_clause  ->  each occurrence of smallest/minimum/lower bound sits in a negated clause
+[PASS] manuscript_does_not_conflate_apparent_asymmetry_with_closed_form_failure  ->  no such sentence
+[PASS] w1_findings_are_present_where_they_are_claimed  ->  7 presence checks pass
+       W1 findings and where bmcmrm_v1 carries each (presence asserted above):
+         - the closed form fails by -2.13 to +6.19 pp across the layer B grid = [-2.13, 6.19]  [68 cells]  (present in Results, How the threshold behaves under sampling)
+         - 5 of 73 layer B combinations have no reachable OR = 1 contour = 5  [73 cells]  (present in Results)
+         - pooled type I error at the true null = 0.0525  [160 cells]  (present in Results and the abstract)
+         - mean Delta_sig / Delta_tip = 0.8583  [640 cells]  (present in Results)
+         - two-layer coverage, uncorrected then corrected = [0.8779, 0.9516]  [800 cells]  (present in Results)
+{
+ "w1_findings": [
+  {
+   "finding": "the closed form fails by -2.13 to +6.19 pp across the layer B grid",
+   "value": [
+    -2.13,
+    6.19
+   ],
+   "rows": 68,
+   "manuscript_status": "present in Results, How the threshold behaves under sampling",
+   "source": "reports/estimator_eval_null_contour.json"
+  },
+  {
+   "finding": "5 of 73 layer B combinations have no reachable OR = 1 contour",
+   "value": 5,
+   "rows": 73,
+   "manuscript_status": "present in Results",
+   "source": "reports/estimator_eval_null_contour.json"
+  },
+  {
+   "finding": "pooled type I error at the true null",
+   "value": 0.0525,
+   "rows": 160,
+   "manuscript_status": "present in Results and the abstract",
+   "source": "reports/estimator_eval_calibration.json"
+  },
+  {
+   "finding": "mean Delta_sig / Delta_tip",
+   "value": 0.8583,
+   "rows": 640,
+   "manuscript_status": "present in Results",
+   "source": "reports/estimator_eval_delta_sig_coverage.json"
+  },
+  {
+   "finding": "two-layer coverage, uncorrected then corrected",
+   "value": [
+    0.8779,
+    0.9516
+   ],
+   "rows": 800,
+   "manuscript_status": "present in Results",
+   "source": "reports/estimator_eval_delta_sig_coverage.json"
+  }
+ ]
+}
+[PASS] all_six_step_artefacts_report_success  ->  baseline=True, dgp_checks=True, calibration=True, delta_sig_coverage=True, null_contour=True, design=True
+[PASS] sampling_behaviour_numbers_recompute_from_their_artefacts  ->  31 values recomputed, all match
+[PASS] etable1_s1_yield_matches_the_manuscript  ->  eTable 1 S1 = 1,188, manuscript says 1,188
+[PASS] etable1_records_all_its_own_yields  ->  8 query rows, combined total 2,796
+[PASS] etable1_gap_searches_are_recorded_with_their_yields  ->  {'G1': '1', 'G2': '0', 'G3': '0'}
+[PASS] abstract_stays_within_the_journal_limit  ->  manuscript 350 words incl. labels (346 of prose), standalone 350 words, limit 350
+[PASS] abstract_copy_is_identical_to_the_manuscript  ->  standalone copy matches the manuscript verbatim
+[PASS] compliance_states_the_same_abstract_word_count  ->  reporting_compliance.md declares ['350'], measured 350
+[PASS] every_numeric_token_is_accounted_for  ->  114 distinct tokens, all classified
+[PASS] every_numeric_token_is_accounted_for  ->  216 distinct tokens, all classified
+
+guards: 43, failed: 0

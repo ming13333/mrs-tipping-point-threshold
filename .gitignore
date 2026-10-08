@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Secrets and credentials — never commit these
+.secrets/
+.env
+*.token
+*_token.txt
+
+# Editor / OS X noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

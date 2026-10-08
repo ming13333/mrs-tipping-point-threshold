@@ -1,0 +1,7 @@
+# Byte-exact reproduction.
+#
+# The MD5 values in MANIFEST.md are over the file bytes as deposited on OSF.
+# Any end-of-line translation would change them, so all line-ending conversion
+# is disabled for every path: the bytes in a clone equal the bytes in the blob
+# equal the bytes on the authors' disk.
+* -text

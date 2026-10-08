@@ -1,0 +1,484 @@
+{
+  "meta": {
+    "step": "W1 step 2",
+    "written": "2026-10-06",
+    "purpose": "reconcile every already-published figure against the legacy formula, and forbid the new evaluation from carrying its own copy of that formula",
+    "formula_source": "scripts/simulate_tipping_point.py",
+    "formula_is_imported_not_copied": true,
+    "legacy_seed": 20260926,
+    "standard_library_only": true,
+    "produces_no_new_scientific_quantity": true
+  },
+  "published_figures": {
+    "main_delta_tip_pp": 19.8,
+    "se_scan_pp": [
+      15.4,
+      21.6
+    ],
+    "two_way_surface_pp": [
+      17.7,
+      26.02
+    ],
+    "boundary_upgrade_rates": [
+      "15%",
+      "71%"
+    ],
+    "ratio_to_closed_form": 0.997,
+    "common_process_artefact_pp": 4.5,
+    "common_process_artefact_pct_of_tip": 23.2,
+    "observed_substitution": [
+      "16.6 pp",
+      "16%"
+    ],
+    "same_denominator_conversions": {
+      "10.6%": [
+        8.5,
+        10.1
+      ],
+      "25.8%": [
+        20.6,
+        24.5
+      ]
+    }
+  },
+  "source_guard": {
+    "id": "source_guard_no_formula_copy",
+    "claim": "this module calls legacy.delta_tip and legacy.p1_of instead of restating the closed form",
+    "published": "no copy of the closed form in scripts/estimator_eval_baseline.py",
+    "recomputed": "no violation",
+    "rounding_rule": "not applicable",
+    "forbidden_patterns": [
+      "\\(\\s*p0\\s*-\\s*p1\\s*\\)\\s*\\*\\s*\\(?\\s*se\\s*-\\s*f\\s*\\)?",
+      "\\(\\s*1\\s*-\\s*p1\\s*\\)\\s*\\)\\s*/\\s*\\(?\\s*1\\s*-\\s*p1",
+      "or_true\\s*\\*\\s*p0\\s*/\\s*\\(\\s*1\\s*-\\s*p0\\s*\\)"
+    ],
+    "violations": [],
+    "passed": true,
+    "note": "the baseline must call the legacy formula rather than restate it; a copy would let the two drift apart silently"
+  },
+  "checks": [
+    {
+      "id": "source_guard_no_formula_copy",
+      "claim": "this module calls legacy.delta_tip and legacy.p1_of instead of restating the closed form",
+      "published": "no copy of the closed form in scripts/estimator_eval_baseline.py",
+      "recomputed": "no violation",
+      "rounding_rule": "not applicable",
+      "forbidden_patterns": [
+        "\\(\\s*p0\\s*-\\s*p1\\s*\\)\\s*\\*\\s*\\(?\\s*se\\s*-\\s*f\\s*\\)?",
+        "\\(\\s*1\\s*-\\s*p1\\s*\\)\\s*\\)\\s*/\\s*\\(?\\s*1\\s*-\\s*p1",
+        "or_true\\s*\\*\\s*p0\\s*/\\s*\\(\\s*1\\s*-\\s*p0\\s*\\)"
+      ],
+      "violations": [],
+      "passed": true,
+      "note": "the baseline must call the legacy formula rather than restate it; a copy would let the two drift apart silently"
+    },
+    {
+      "id": "delta_tip_main",
+      "claim": "headline one-way tipping point, p0 = 0.55, true OR = 0.60, se = 0.90, f = 0",
+      "published": 19.8,
+      "recomputed": 19.8,
+      "rounding_rule": "two decimals",
+      "passed": true,
+      "note": "manuscript L124, L134; handoff packet section 2.2"
+    },
+    {
+      "id": "delta_tip_se_scan",
+      "claim": "sensitivity scan 0.70 to 0.98 at the same p0 and OR",
+      "published": [
+        15.4,
+        21.6
+      ],
+      "recomputed": [
+        15.4,
+        21.6
+      ],
+      "rounding_rule": "one decimal, both endpoints",
+      "passed": true,
+      "note": "manuscript Table 1 last two entries of the p0 = 0.55, OR = 0.60 row"
+    },
+    {
+      "id": "f_zero_is_the_maximum",
+      "claim": "delta_tip decreases as the reference false-positive rate rises",
+      "published": "monotone decreasing, f = 0 largest",
+      "recomputed": [
+        19.8,
+        18.7,
+        17.6
+      ],
+      "rounding_rule": "two decimals",
+      "passed": true,
+      "note": "manuscript Fig. 2 caption and Table 1 footnote both state that the f = 0 values are the largest in the family"
+    },
+    {
+      "id": "table1_all_cells",
+      "claim": "all 36 cells of Table 1 (3 p0 x 3 OR x 4 se) reproduce exactly",
+      "published": "36 of 36 cells",
+      "recomputed": "36 of 36 cells",
+      "rounding_rule": "one decimal",
+      "passed": true,
+      "note": "rows are in the JSON for cell-level traceability",
+      "rows": [
+        {
+          "p0": 0.5,
+          "or_true": 0.6,
+          "p1": 0.375,
+          "printed": [
+            14.0,
+            16.0,
+            18.0,
+            19.6
+          ],
+          "recomputed": [
+            14.0,
+            16.0,
+            18.0,
+            19.6
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.5,
+          "or_true": 0.7,
+          "p1": 0.412,
+          "printed": [
+            10.5,
+            12.0,
+            13.5,
+            14.7
+          ],
+          "recomputed": [
+            10.5,
+            12.0,
+            13.5,
+            14.7
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.5,
+          "or_true": 0.8,
+          "p1": 0.444,
+          "printed": [
+            7.0,
+            8.0,
+            9.0,
+            9.8
+          ],
+          "recomputed": [
+            7.0,
+            8.0,
+            9.0,
+            9.8
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.55,
+          "or_true": 0.6,
+          "p1": 0.423,
+          "printed": [
+            15.4,
+            17.6,
+            19.8,
+            21.6
+          ],
+          "recomputed": [
+            15.4,
+            17.6,
+            19.8,
+            21.6
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.55,
+          "or_true": 0.7,
+          "p1": 0.461,
+          "printed": [
+            11.6,
+            13.2,
+            14.9,
+            16.2
+          ],
+          "recomputed": [
+            11.6,
+            13.2,
+            14.9,
+            16.2
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.55,
+          "or_true": 0.8,
+          "p1": 0.494,
+          "printed": [
+            7.7,
+            8.8,
+            9.9,
+            10.8
+          ],
+          "recomputed": [
+            7.7,
+            8.8,
+            9.9,
+            10.8
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.6,
+          "or_true": 0.6,
+          "p1": 0.474,
+          "printed": [
+            16.8,
+            19.2,
+            21.6,
+            23.5
+          ],
+          "recomputed": [
+            16.8,
+            19.2,
+            21.6,
+            23.5
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.6,
+          "or_true": 0.7,
+          "p1": 0.512,
+          "printed": [
+            12.6,
+            14.4,
+            16.2,
+            17.6
+          ],
+          "recomputed": [
+            12.6,
+            14.4,
+            16.2,
+            17.6
+          ],
+          "passed": true
+        },
+        {
+          "p0": 0.6,
+          "or_true": 0.8,
+          "p1": 0.545,
+          "printed": [
+            8.4,
+            9.6,
+            10.8,
+            11.8
+          ],
+          "recomputed": [
+            8.4,
+            9.6,
+            10.8,
+            11.8
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "boundary_index_upgrade_rate_for_null",
+      "claim": "index-arm boundary upgrade rate that yields a null, reference arm a0 = 0.15",
+      "published": "71%",
+      "recomputed": "71%",
+      "rounding_rule": "whole per cent",
+      "passed": true,
+      "note": "manuscript L134"
+    },
+    {
+      "id": "boundary_reference_upgrade_rate",
+      "claim": "reference-arm boundary upgrade rate, stated in the manuscript as 15%",
+      "published": "15%",
+      "recomputed": "15%",
+      "rounding_rule": "input, not a computed quantity",
+      "passed": true,
+      "note": "manuscript L134; the 71 vs 15 contrast is the point of the paragraph"
+    },
+    {
+      "id": "boundary_ratio_to_closed_form",
+      "claim": "effective asymmetry needed for a null divided by the closed-form value",
+      "published": 0.997,
+      "recomputed": 0.997,
+      "rounding_rule": "three decimals",
+      "passed": true,
+      "note": "manuscript: the closed form survives re-expression at the boundary"
+    },
+    {
+      "id": "two_way_surface_range",
+      "claim": "range of effective asymmetry producing a null once the downgrade rate b1 is also free (9 values of b1, 0.00 to 0.40)",
+      "published": [
+        17.7,
+        26.02
+      ],
+      "recomputed": [
+        17.7,
+        26.02
+      ],
+      "rounding_rule": "two decimals",
+      "passed": true,
+      "note": "eMethods section 4; the manuscript reports the range, not a single value"
+    },
+    {
+      "id": "two_way_contour_is_fully_reachable",
+      "claim": "every b1 on the grid admits an a1 that produces a null",
+      "published": "9 of 9",
+      "recomputed": "9 of 9",
+      "rounding_rule": "count",
+      "passed": true,
+      "note": "a null-reachable entry would change the reported range and is therefore a reportable fact, not a nuisance"
+    },
+    {
+      "id": "common_process_apparent_asymmetry",
+      "claim": "largest apparent asymmetry produced by an identical measurement process in both arms, across 16 grade-distribution shapes",
+      "published": 4.5,
+      "recomputed": 4.5,
+      "rounding_rule": "two decimals",
+      "passed": true,
+      "note": "manuscript: at most 4.5 pp of apparent asymmetry from a common process"
+    },
+    {
+      "id": "common_process_asymmetry_as_pct_of_tip",
+      "claim": "the same artefact expressed as a percentage of the closed-form threshold",
+      "published": 23.2,
+      "recomputed": 23.2,
+      "rounding_rule": "one decimal",
+      "passed": true,
+      "note": "largest single cell of the shape-robustness grid"
+    },
+    {
+      "id": "part1_mc_agrees_with_closed_form",
+      "claim": "at Delta_tip the analytic observed OR is exactly 1 and the Monte-Carlo median reproduces the analytic value at all five delta multiples",
+      "published": "OR = 1.0000 at 19.80 pp; MC median matches analytic",
+      "recomputed": {
+        "analytic_at_tip": 1.0,
+        "worst_gap_analytic_vs_mc_median": 0.0029,
+        "delta_pp": [
+          9.9,
+          15.8,
+          19.8,
+          23.8,
+          29.7
+        ]
+      },
+      "rounding_rule": "four decimals for the OR, one for delta",
+      "passed": true,
+      "note": "4,000 replications per point, n = 1,000 per arm, seed 20260926, exactly as in eMethods section 2"
+    },
+    {
+      "id": "observed_risk_substitution_understatement",
+      "claim": "a reader who substitutes the observed arm risks, and the observed odds ratio read off them, into the closed form obtains 16.6 percentage points where the correct figure is 19.8",
+      "published": "16.6 pp and 16% low (manuscript L79, one decimal)",
+      "recomputed": [
+        16.6,
+        "16%"
+      ],
+      "rounding_rule": "one decimal for pp, whole per cent",
+      "passed": true,
+      "note": "manuscript L79 prints 16.6 pp and \"an underestimate of 16 per cent\"; the unrounded values are 16.6107 pp and 16.1076 per cent, so the printed pair is correct under its own rounding. The working notes and the handoff packet carry 16.60 pp and 16.1 per cent, which overstate the printed precision of the same two quantities; the discrepancy is 0.01 pp and does not change the argument, but the manuscript form is the one to carry forward"
+    },
+    {
+      "id": "same_denominator_conversion_10p6",
+      "claim": "half of a 10.6 per cent total disagreement, expressed as excess false-positive rate over the reference-risk range of Table 1",
+      "published": [
+        8.5,
+        10.1
+      ],
+      "recomputed": [
+        8.5,
+        10.1
+      ],
+      "rounding_rule": "one decimal",
+      "passed": true,
+      "note": "manuscript L124; the construction is half the total divided by the index-arm non-adverse fraction 1 - p1"
+    },
+    {
+      "id": "same_denominator_conversion_25p8",
+      "claim": "the same construction applied to a 25.8 per cent disagreement",
+      "published": [
+        20.6,
+        24.5
+      ],
+      "recomputed": [
+        20.6,
+        24.5
+      ],
+      "rounding_rule": "one decimal",
+      "passed": true,
+      "note": "manuscript L124; 10.6 per cent maps below the threshold and 25.8 per cent maps above it, which is the argument of the paragraph"
+    },
+    {
+      "id": "conversion_straddles_the_threshold",
+      "claim": "the two published disagreement figures fall on opposite sides of 19.80 pp",
+      "published": "below and above",
+      "recomputed": "below and above",
+      "rounding_rule": "ordering only",
+      "passed": true,
+      "note": "this ordering, not either number alone, is what the paragraph claims"
+    }
+  ],
+  "legacy_output_cross_reference": {
+    "file": "reports/simulation_tipping_point.json",
+    "delta_tip_pp": 19.8,
+    "analytic_observed_or": [
+      0.7947,
+      0.9126,
+      1.0,
+      1.0957,
+      1.2576
+    ],
+    "two_way_contour_delta_effective_pp": [
+      17.7,
+      18.74,
+      19.78,
+      20.82,
+      21.86,
+      22.9,
+      23.94,
+      24.98,
+      26.02
+    ]
+  },
+  "not_recomputed_here": [
+    {
+      "figure": "10.6%",
+      "source": "total local-versus-central disagreement, Shawkat 2025 (ref 15) and van der Ende 2022 (ref 16)",
+      "recomputed_here": false,
+      "note": "an external or legacy input; this step verifies the arithmetic built on top of it, not the figure itself"
+    },
+    {
+      "figure": "25.8%",
+      "source": "as above, upper end of the reported range",
+      "recomputed_here": false,
+      "note": "an external or legacy input; this step verifies the arithmetic built on top of it, not the figure itself"
+    },
+    {
+      "figure": "36 values",
+      "source": "the number of mRS values in the comparison cited as ref 14; a count reported by others, not computed here",
+      "recomputed_here": false,
+      "note": "an external or legacy input; this step verifies the arithmetic built on top of it, not the figure itself"
+    },
+    {
+      "figure": "p0 = 0.55 / p1 = 0.423",
+      "source": "taken from the grade distributions GRADES_REF and GRADES_IDX in the legacy script",
+      "recomputed_here": false,
+      "note": "an external or legacy input; this step verifies the arithmetic built on top of it, not the figure itself"
+    },
+    {
+      "figure": "true OR = 0.60",
+      "source": "implied by those two distributions; recomputed as 0.599810934299669, a true-benefit cell",
+      "recomputed_here": false,
+      "note": "an external or legacy input; this step verifies the arithmetic built on top of it, not the figure itself"
+    }
+  ],
+  "summary": {
+    "checks_total": 17,
+    "checks_failed": 0,
+    "all_passed": true
+  }
+}

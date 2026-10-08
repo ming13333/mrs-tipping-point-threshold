@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "purpose": "Estimator-level evaluation of the one-way false-positive-rate tipping point, as distinct from verifying the closed form itself.",
+    "written": "2026-10-06",
+    "supersedes": "the N1 sketch in reports/upgrade_to_original_article_outline_2026-10-06.md",
+    "standard_library_only": true
+  },
+  "scenario_grid": {
+    "p0_true_reference_risk": [
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65
+    ],
+    "or_true": [
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      1.0
+    ],
+    "or_true_note": "1.00 is the true-null calibration cell and MUST be present. Round 3 item 2: the earlier assertion p1 < p0 silently excluded it.",
+    "n_per_arm": [
+      100,
+      500,
+      1000,
+      2000
+    ],
+    "se_common": [
+      0.7,
+      0.8,
+      0.9,
+      0.98
+    ],
+    "f_reference_false_positive": [
+      0.0,
+      0.05
+    ],
+    "reps_per_cell": 2000,
+    "seed": 20261006,
+    "seed_note": "20261006; the v12 Monte Carlo used 20260926 and the two must not be mixed.",
+    "alpha": 0.05
+  },
+  "risk_provenance": {
+    "true_risk_symbols": [
+      "p0",
+      "p1"
+    ],
+    "observed_risk_symbols": [
+      "q0",
+      "q1"
+    ],
+    "observed_from_true": "q = p * se + (1 - p) * fp",
+    "invert_observed_to_true": "p = (q - f) / (se - f)",
+    "hard_rule": "The closed form consumes TRUE risks. Published arm risks are OBSERVED. Substituting observed for true understates the threshold by about 16 per cent at se = 0.90, p0 = 0.55, OR = 0.60, so nothing here may be presented as computable from published arm risks alone.",
+    "unidentified_inputs": [
+      "se",
+      "f"
+    ],
+    "unidentified_note": "Neither has a validated estimate for the mRS 3-6 dichotomisation, so the inversion is not operational."
+  },
+  "dgp_layer": {
+    "layer_A": {
+      "name": "arm-level two-parameter error",
+      "parameters": {
+        "se": "common to both arms",
+        "f": "reference false-positive rate",
+        "f_plus_delta": "index false-positive rate"
+      },
+      "use": "the mechanism the closed form assumes; this is where 19.80 pp is verified",
+      "closed_form_valid": true
+    },
+    "layer_B": {
+      "name": "mRS boundary grade error",
+      "parameters": {
+        "a0_b0": "reference upgrade and downgrade rates",
+        "a1_b1": "index upgrade and downgrade rates"
+      },
+      "use": "robustness only",
+      "closed_form_valid": "not guaranteed",
+      "mandatory_check": "record the effective sensitivity and the effective false-positive rate implied in each arm, and assert whether they are still equal across arms",
+      "reporting_rule": "cells where they are unequal are reported separately and are never pooled with layer A"
+    },
+    "expected_offset": {
+      "value_pp": [
+        0.0,
+        4.5
+      ],
+      "scope": "the specific common-process shape scenarios in v12 only. It does NOT bound every layer B cell, because layer B also varies the downgrade rate.",
+      "round3_item3": "the earlier wording implied a general bound; corrected."
+    }
+  },
+  "threshold_rule": {
+    "delta_tip_definition": "the unique delta at which the POPULATION observed odds ratio equals 1, that is, equal observed risks",
+    "delta_tip_formula": "(se - f)(p0 - p1) / (1 - p1)",
+    "delta_tip_depends_on_n": false,
+    "delta_sig_definition": "the largest delta on the benefit side at which the two-sided Wald rejection rate is still at or above alpha",
+    "delta_sig_boundary": "CI UPPER limit; round 3 item 5, the lower limit is the wrong boundary while the observed OR is below 1",
+    "delta_sig_depends_on_n": true,
+    "delta_median_definition": "the delta at which half of replications already have the CI upper limit reaching 1; reported separately from delta_sig",
+    "scan_axis": {
+      "layer_A": "delta itself, by bisection on the rejection rate, with delta_tip always evaluated as an endpoint",
+      "layer_B": "the index upgrade rate a1, with the effective delta implied by the boundary model recorded on a separate axis"
+    },
+    "scan_must_include": [
+      "delta = 0",
+      "delta = delta_tip",
+      "the delta at which the population observed OR = 1, which is delta_tip"
+    ],
+    "legality_assertions": [
+      "0 <= f <= 1",
+      "0 <= f + delta <= 1",
+      "se > f",
+      "0 < p1 < 1",
+      "p1 <= p0, compared with a 1e-12 tolerance"
+    ],
+    "legality_tolerance_note": "Every bound is compared with TOL = 1e-12. At or_true = 1 the computed p1 overshoots p0 by 1.1e-16, so both `p1 < p0` and `p1 <= p0` fail on floating-point residue and silently drop the true-null calibration cell. A bare relational operator is not a sufficient fix.",
+    "infeasible_cells": "record the failing assertion and exclude the cell; never drop it silently"
+  },
+  "inference_rule": {
+    "common_target": "the between-group true log odds ratio",
+    "why_common": "round 3: both confidence procedures must target the same population quantity, otherwise the two coverage figures are not comparable",
+    "true_null": "or_true = 1.0 with delta = 0 gives the empirical type I error, which must land near 5 per cent",
+    "observed_null": "the population observed OR = 1 occurs at delta = delta_tip; at that delta the rejection rate is a property of the sampling distribution, not zero",
+    "round3_item2": "The earlier claim that the test statistic is identically zero and the rejection probability identically zero was wrong. Fixed population parameters fix the population OR, not the sample OR.",
+    "test": "two-sided Wald on the log odds ratio, alpha = 0.05",
+    "coverage_layer_1": "Wald CI for the between-group true log OR, uncorrected",
+    "coverage_layer_2": "the same target after correcting for the assumed (se, f); the correction inputs are assumed and are never estimated from the same sample",
+    "power_scenario": "or_true < 1 with delta > 0: the rejection rate here is a detection rate and must NOT be labelled a type I error"
+  },
+  "sampling_rule": {
+    "procedure": "for each cell draw x0 ~ Binomial(n, q0) and x1 ~ Binomial(n, q1) independently, with q fixed by the population parameters",
+    "deterministic_vs_random": "the population observed OR is deterministic given delta; the sample OR is random. Both are stored per cell as pop_observed_or and mean_sample_or.",
+    "zero_cells": "drop replicates in which any of the four cell counts is zero; record usable_reps against requested_reps",
+    "insufficient_reps": "a cell yielding usable_reps below 50 per cent of the requested count is reported as infeasible rather than summarised",
+    "monte_carlo_error": "binomial 95 per cent interval half-width on each rate, 1.96 * sqrt(r(1-r)/used)"
+  },
+  "outputs": [
+    "bias: mean_sample_or and mean_sample_or minus or_true, on OR and log scales",
+    "type I error: reject_rate in the or_true = 1, delta = 0 cell",
+    "detection rate: reject_rate in the or_true < 1, delta > 0 cells, labelled as detection and not as type I error",
+    "coverage: layer 1 and layer 2, both against the between-group true log OR",
+    "delta_tip, delta_sig, delta_median and the gaps between them",
+    "per-cell Monte Carlo error, usable repetitions, and grid-refinement difference"
+  ],
+  "self_checks": [
+    {
+      "id": "true_null_type_i",
+      "passed": true,
+      "expected": "5.0 nominal, tolerance 1 pp",
+      "observed": 4.9,
+      "note": "proves the or_true = 1 cell is reachable; round 3 item 2"
+    },
+    {
+      "id": "delta_tip_population_or_one_sample_or_not",
+      "passed": true,
+      "expected": "pop_observed_or exactly 1 AND reject_rate materially above 0",
+      "observed": {
+        "delta_tip_pp": 19.8,
+        "pop_observed_or": 1.0,
+        "reject_rate_pct": 4.71
+      },
+      "note": "this is the correction of the round-3 error; a reject_rate of 0 here would mean the specification had re-introduced the confusion"
+    },
+    {
+      "id": "delta_sig_at_or_below_delta_tip",
+      "passed": true,
+      "expected": "delta_sig <= delta_tip, ratio close to 1",
+      "observed": {
+        "delta_sig_pp": 19.79,
+        "delta_tip_pp": 19.8,
+        "ratio": 0.9995,
+        "capped_at_delta_tip": false
+      },
+      "note": "the near-identity is itself the finding: the closed form already lands where the sampling test loses significance, so there is no large gap to exploit"
+    },
+    {
+      "id": "legality_guard_blocks_f_plus_delta_gt_1",
+      "passed": true,
+      "expected": "None returned, with the failing assertion recorded",
+      "observed": "cell returned None",
+      "note": "round 3 item 5; an unguarded scan divides by zero on the far grid"
+    }
+  ]
+}
