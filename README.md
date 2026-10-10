@@ -6,6 +6,11 @@ Analysis protocol, simulation code and complete output for a methodological stud
 **Registration.** OSF Registries, *Simulation Study Template* (ADEMP-PreReg):
 [10.17605/OSF.IO/87ZJN](https://doi.org/10.17605/OSF.IO/87ZJN) — project at <https://osf.io/h8u35/>.
 
+**Archived snapshot.** Tag `v1.0.0` is archived at
+[10.5281/zenodo.23275142](https://doi.org/10.5281/zenodo.23275142); the concept DOI for later
+versions is [10.5281/zenodo.23275141](https://doi.org/10.5281/zenodo.23275141). The deposit is the
+`v1.0.0` tree byte-for-byte — the only change on this branch is the addition of these DOI lines.
+
 The registration is a **post-hoc deposit**: the analyses it describes were completed before it was
 deposited, and it discloses that in its own text rather than leaving the date to be discovered.
 `reports/estimator_eval_design.json` carries a timestamp that precedes the first output file of the
